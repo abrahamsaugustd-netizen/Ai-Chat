@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #chat-container {
+            width: 400px;
+            height: 600px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        #chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        .user-message {
+            background-color: #007bff;
+            color: #fff;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .ai-message {
+            background-color: #e9e9eb;
+            color: #000;
+            align-self: flex-start;
+        }
+        #chat-form {
+            display: flex;
+            padding: 10px;
+        }
+        #chat-input {
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 16px;
+            outline: none;
+        }
+        #send-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+        <form id="chat-form">
+            <input type="text" id="chat-input" placeholder="Type a message..." required>
+            <button id="send-button" type="submit">➔</button>
+        </form>
+    </div>
+
+    <script>
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const userMessage = chatInput.value;
+            if (userMessage.trim() === '') return;
+
+            addMessage(userMessage, 'user-message');
+            chatInput.value = '';
+
+            setTimeout(() => {
+                const aiMessage = getAIMessage(userMessage);
+                addMessage(aiMessage, 'ai-message');
+            }, 600);
+        });
+
+        function addMessage(message, className) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', className);
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getAIMessage(userMessage) {
+            const lowerCaseMessage = userMessage.toLowerCase();
+            if (lowerCaseMessage.includes('hello') || lowerCaseMessage.includes('hi')) {
+                return 'Hello there! How can I help you today?';
+            } else if (lowerCaseMessage.includes('how are you')) {
+                return 'I am just a bunch of code, but I am doing great! Thanks for asking.';
+            } else if (lowerCaseMessage.includes('website')) {
+                return 'I can help you with that. What kind of website are you looking for?';
+            } else if (lowerCaseMessage.includes('bye')) {
+                return 'Goodbye! Have a great day.';
+            } else {
+                return "Sorry, I don't understand that yet. I am still learning.";
+            }
+        }
+    </script>
+</body>
+</html>
